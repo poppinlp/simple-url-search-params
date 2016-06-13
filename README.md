@@ -6,7 +6,7 @@
 
 A SIMPLE polyfill for URLSearchParams.
 
-SIMPLE means fast bug not full support >.<
+SIMPLE means fast but not full support >.<
 
 ## Polyfill List
 
