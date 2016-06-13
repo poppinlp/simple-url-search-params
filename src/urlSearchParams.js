@@ -5,35 +5,23 @@
  * @license MIT
  */
 window.URLSearchParams = window.URLSearchParams || (str => {
-    const encode = str => encodeURIComponent(str).replace(/[!'()*]/g, c => '%' + c.charCodeAt(0).toString(16));
-
     /*
-    [
-        {
-            key:
-            val:
-        }
-    ]
+    [{
+        key:
+        val:
+    }]
     */
     var data = [];
 
     /*
     {
-        key: [
-            index in data
-        ]
+        key: [ index in data ]
     }
     */
     var keys = {};
 
-    // create a new object
-    var o = Object.create(null);
-
-    // check exist
-    o.has = key => !!keys[key];
-
-    // append key-value pair
-    o.append = (key, val) => {
+    const encode = str => encodeURIComponent(str).replace(/[!'()*]/g, c => '%' + c.charCodeAt(0).toString(16));
+    const append = (key, val) => {
         if (!keys[key]) keys[key] = [];
 
         keys[key].push(data.push({
@@ -42,55 +30,48 @@ window.URLSearchParams = window.URLSearchParams || (str => {
         }) - 1);
     };
 
-    // delete all values by key
-    o.delete = key => {
-        if (!keys[key]) return;
+    str && str.split('&').forEach(v => append.apply(null, v.split('=')));
 
-        data = data.filter(o => o.key !== key);
-        delete keys[key];
-    };
+    return {
+        has: key => !!keys[key],
+        append: append,
+        delete: key => {
+            if (!keys[key]) return;
 
-    // get first value by key
-    o.get = key => keys[key] ? data[keys[key][0]].val : null;
-
-    // get all values by key
-    o.getAll = key => keys[key] ? keys[key].map(index => data[index].val) : [];
-
-    // set a value to key and other value for the same key
-    o.set = (key, val) => {
-        if (!keys[key]) {
-            o.append(key, val);
-            return;
-        }
-
-        if (keys[key].length === 1) {
-            data[keys[key][0]].val = val;
-            return;
-        }
-
-        var originData = data,
-            isFirst = true;
-
-        data = [];
-        keys = {};
-
-        originData.forEach(o => {
-            if (o.key !== key) {
-                o.append(o.key, o.val);
+            data = data.filter(o => o.key !== key);
+            delete keys[key];
+        },
+        get: key => keys[key] ? data[keys[key][0]].val : null,
+        getAll: key => keys[key] ? keys[key].map(index => data[index].val) : [],
+        set: (key, val) => {
+            if (!keys[key]) {
+                append(key, val);
                 return;
             }
 
-            if (isFirst) {
-                o.append(o.key, val);
-                isFirst = false;
+            if (keys[key].length === 1) {
+                data[keys[key][0]].val = val;
+                return;
             }
-        });
+
+            var originData = data,
+                isFirst = true;
+
+            data = [];
+            keys = {};
+
+            originData.forEach(o => {
+                if (o.key !== key) {
+                    append(o.key, o.val);
+                    return;
+                }
+
+                if (isFirst) {
+                    append(o.key, val);
+                    isFirst = false;
+                }
+            });
+        },
+        toString: () => data.map(o => `${o.key}=${encode(o.val)}`).join('&')
     };
-
-    // print all data to string
-    o.toString = () => data.map(o => `${o.key}=${encode(o.val)}`).join('&');
-
-    str.split('&').forEach(v => o.append.apply(o, v.split('=')));
-
-    return o;
 });

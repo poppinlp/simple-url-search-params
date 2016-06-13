@@ -1,6 +1,6 @@
 {
   "name": "simple-url-search-params",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Just a simple polyfill for URLSearchParams",
   "main": "dist/urlSearchParams.min.js",
   "repository": {
