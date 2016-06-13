@@ -6,17 +6,26 @@
 
 A SIMPLE polyfill for URLSearchParams.
 
-SIMPLE means not full support >.<
+SIMPLE means fast bug not full support >.<
 
-## polyfill list
+## Polyfill List
 
 - append
+- has
 - get
 - getAll
-- has
+- set
 - delete
 - toString
 
-## browser compatibility
+## Browser Compatibility
 
 IE >= 9
+
+## TODO
+
+- Add unit test case
+
+## History
+
+- 0.1.0 Init version

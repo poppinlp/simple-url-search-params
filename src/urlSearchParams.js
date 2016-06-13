@@ -1,4 +1,8 @@
-window.URLSearchParams = URLSearchParams || (str => {
+/**
+ * @preserve
+ * simple-url-search-params version 0.1.0
+ */
+window.URLSearchParams = window.URLSearchParams || (str => {
     const encode = str => encodeURIComponent(str).replace(/[!'()*]/g, c => '%' + c.charCodeAt(0).toString(16));
 
     /*
@@ -50,15 +54,38 @@ window.URLSearchParams = URLSearchParams || (str => {
     // get all values by key
     o.getAll = key => keys[key] ? keys[key].map(index => data[index].val) : [];
 
-    /*
+    // set a value to key and other value for the same key
     o.set = (key, val) => {
         if (!keys[key]) {
             o.append(key, val);
             return;
         }
-    };
-    */
 
+        if (keys[key].length === 1) {
+            data[keys[key][0]].val = val;
+            return;
+        }
+
+        var originData = data,
+            isFirst = true;
+
+        data = [];
+        keys = {};
+
+        originData.forEach(o => {
+            if (o.key !== key) {
+                o.append(o.key, o.val);
+                return;
+            }
+
+            if (isFirst) {
+                o.append(o.key, val);
+                isFirst = false;
+            }
+        });
+    };
+
+    // print all data to string
     o.toString = () => data.map(o => `${o.key}=${encode(o.val)}`).join('&');
 
     str.split('&').forEach(v => o.append.apply(o, v.split('=')));
