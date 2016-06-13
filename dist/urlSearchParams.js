@@ -1,7 +1,8 @@
 /**
- * @file simple-url-search-params
+ * @preserve
+ * @name simple-url-search-params
  * @version 0.1.1
- * @author PoppinL
+ * @license MIT
  */
 window.URLSearchParams = window.URLSearchParams || function (str) {
     var encode = function encode(str) {
