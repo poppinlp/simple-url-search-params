@@ -1,6 +1,9 @@
-'use strict';
-
-window.URLSearchParams = URLSearchParams || function (str) {
+/**
+ * @file simple-url-search-params
+ * @version 0.1.1
+ * @author PoppinL
+ */
+window.URLSearchParams = window.URLSearchParams || function (str) {
     var encode = function encode(str) {
         return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
             return '%' + c.charCodeAt(0).toString(16);
@@ -66,15 +69,38 @@ window.URLSearchParams = URLSearchParams || function (str) {
         }) : [];
     };
 
-    /*
-    o.set = (key, val) => {
+    // set a value to key and other value for the same key
+    o.set = function (key, val) {
         if (!keys[key]) {
             o.append(key, val);
             return;
         }
-    };
-    */
 
+        if (keys[key].length === 1) {
+            data[keys[key][0]].val = val;
+            return;
+        }
+
+        var originData = data,
+            isFirst = true;
+
+        data = [];
+        keys = {};
+
+        originData.forEach(function (o) {
+            if (o.key !== key) {
+                o.append(o.key, o.val);
+                return;
+            }
+
+            if (isFirst) {
+                o.append(o.key, val);
+                isFirst = false;
+            }
+        });
+    };
+
+    // print all data to string
     o.toString = function () {
         return data.map(function (o) {
             return o.key + '=' + encode(o.val);

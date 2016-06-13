@@ -28,4 +28,4 @@ IE >= 9
 
 ## History
 
-- 0.1.0 Init version
+- 0.1.1 Init version

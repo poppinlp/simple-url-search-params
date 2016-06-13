@@ -1,6 +1,8 @@
 /**
  * @preserve
- * simple-url-search-params version 0.1.0
+ * @name simple-url-search-params
+ * @version 0.1.1
+ * @license MIT
  */
 window.URLSearchParams = window.URLSearchParams || (str => {
     const encode = str => encodeURIComponent(str).replace(/[!'()*]/g, c => '%' + c.charCodeAt(0).toString(16));
