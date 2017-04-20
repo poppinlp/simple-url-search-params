@@ -1,4 +1,9 @@
 {
-    "presets": ["es2015-nostrict"],
-    "compact": false
+	"presets": [
+		"es2015",
+		{
+			"modules": false
+		}
+	],
+	"compact": false
 }
